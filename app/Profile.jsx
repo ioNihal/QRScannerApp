@@ -5,7 +5,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 export default function Profile() {
   const params = useLocalSearchParams();
   const [userData, setUserData] = useState(null);
-  const qrData = params.qrData; // Safely access qrData
+  const qrData = params.qrData;
   const router = useRouter();
   console.log('QR Data received in Profile:', qrData);
 
@@ -20,7 +20,6 @@ export default function Profile() {
         const response = await fetch(`http://192.168.157.83:3000/get-user?qrData=${encodeURIComponent(qrData)}`);
         
         if (!response.ok) {
-          // Handle non-JSON responses, like HTML error pages
           const text = await response.text();
           console.error('Error fetching user data:', text);
           Alert.alert('Error', 'Failed to fetch user data. Please check your server.');
