@@ -17,7 +17,7 @@ export default function Profile() {
 
     const fetchUserData = async () => {
       try {
-        const response = await fetch(`http://192.168.157.83:3000/get-user?qrData=${encodeURIComponent(qrData)}`);
+        const response = await fetch(`http://192.168.14.83:3000/get-user?qrData=${encodeURIComponent(qrData)}`);
         
         if (!response.ok) {
           const text = await response.text();
@@ -39,7 +39,7 @@ export default function Profile() {
 
   const handleInOut = async (action) => {
     try {
-      const response = await fetch('http://192.168.157.83:3000/mark-in-out', {
+      const response = await fetch('http://192.168.14.83:3000/mark-in-out', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
