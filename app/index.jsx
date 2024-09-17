@@ -7,9 +7,13 @@ export default function Index() {
 
   return (
     <View style={styles.container}>
-      <Button 
+      <Button
         title="Open Scanner" 
         onPress={() => router.push('/Scanner')} 
+      />
+      <Button 
+        title="About Us" 
+        onPress={() => router.push('/About')} 
       />
     </View>
   );
@@ -18,7 +22,7 @@ export default function Index() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     alignItems: 'center',
   },
 });

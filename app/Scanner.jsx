@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Button, StyleSheet, Alert, Text } from 'react-native';
-import { BarCodeScanner } from 'expo-barcode-scanner';
+import { CameraView, Camera } from "expo-camera";
 import { useRouter } from 'expo-router';
 
 export default function Scanner() {
@@ -9,16 +9,16 @@ export default function Scanner() {
   const router = useRouter();
 
   useEffect(() => {
-    const getBarCodeScannerPermissions = async () => {
-      const { status } = await BarCodeScanner.requestPermissionsAsync();
+    const getCameraPermissions = async () => {
+      const { status } = await Camera.requestCameraPermissionsAsync();
       setHasPermission(status === 'granted');
     };
 
-    getBarCodeScannerPermissions();
+    getCameraPermissions();
   }, []);
 
   const handleBarCodeScanned = ({ type, data }) => {
-    if (type === BarCodeScanner.Constants.BarCodeType.qr) {
+    if (type === 256) {
       setScanned(true);
       console.log('Scanned QR Code Data:', data);
       router.push({
@@ -39,14 +39,17 @@ export default function Scanner() {
 
   return (
     <View style={styles.container}>
-      <BarCodeScanner
-        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-        style={StyleSheet.absoluteFillObject}
-        barCodeTypes={[BarCodeScanner.Constants.BarCodeType.qr]}
+      <CameraView
+        onBarcodeScanned={scanned ? undefined : handleBarCodeScanned }
+        barcodeScannerSettings={{
+          barcodeTypes: ["qr"],
+        }}
+        style={styles.cam}
       />
       {scanned && (
-        <Button title="Scan Again" onPress={() => setScanned(false)} />
+        <Button title={"Tap to Scan Again"} onPress={() => setScanned(false)} />
       )}
+      
     </View>
   );
 }
@@ -54,7 +57,13 @@ export default function Scanner() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    gap: 20,
     justifyContent: 'center',
     alignItems: 'center',
   },
+  cam: {
+    height: 350,
+    width: 350,
+    marginBottom: 200,
+  }
 });

@@ -5,6 +5,7 @@ export default function RootLayout() {
     <Stack>
       <Stack.Screen name="index" options={{ title: 'QR Scanner' }} />
       <Stack.Screen name="Profile" options={{ title: 'Verify User' }} />
+      <Stack.Screen name="About" options={{ title: 'About' }} />
     </Stack>
   );
 }

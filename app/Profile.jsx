@@ -32,7 +32,7 @@ export default function Profile() {
         if (!response.ok) {
           const text = await response.text();
           console.error('Error fetching user data:', text);
-          Alert.alert('Error', 'Failed to fetch user data. Please check your server.');
+          Alert.alert('Error fetching user data:', text);
           return;
         }
 
@@ -81,11 +81,16 @@ export default function Profile() {
 
   return (
     <View style={styles.container}>
+      {console.log(JSON.stringify(userData))}
       <View style={styles.resCon}>
         <Text style={userData.success === "true" ? styles.titleR : styles.titleG }>USER DATA</Text>
         <Text style={styles.response}> SUCCESS: {userData.success} </Text>
         <Text style={styles.response}> STATUS: {userData.status} </Text>
         <Text style={styles.response}> MESSAGE: {userData.message} </Text>
+        <Text style={styles.response}> REGISTER NO: {userData.sregno} </Text>
+        <Text style={styles.response}> NAME: {userData.sname} </Text>
+        <Text style={styles.response}> BATCH: {userData.sbatch} </Text>
+        <Text style={styles.response}> TICKET ID: {userData.sticketno} </Text>
       </View>
       <View style={styles.buttonContainer}>
         <Button title="New Scan" onPress={() => router.push('/')} />
