@@ -23,7 +23,7 @@ export default function Scanner() {
       console.log('Scanned QR Code Data:', data);
       router.push({
         pathname:'/Profile' ,
-        params: { qrData: data },
+        params: { qrhash: data },
       })
     } else {
       Alert.alert('Not a QR Code', `Scanned type: ${type}`);

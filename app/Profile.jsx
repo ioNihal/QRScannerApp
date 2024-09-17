@@ -5,20 +5,30 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 export default function Profile() {
   const params = useLocalSearchParams();
   const [userData, setUserData] = useState(null);
-  const qrData = params.qrData;
+  const qrhash = params.qrhash;
   const router = useRouter();
-  console.log('QR Data received in Profile:', qrData);
+  console.log('QR Data received in Profile:', qrhash);
 
   useEffect(() => {
-    if (!qrData) {
+    if (!qrhash) {
       Alert.alert('Error', 'No QR data provided');
       return;
     }
 
     const fetchUserData = async () => {
       try {
-        const response = await fetch(`http://192.168.14.83:3000/get-user?qrData=${encodeURIComponent(qrData)}`);
-        
+        console.log(qrhash);
+        const response = await fetch('https://icis.dunite.tech/api/validate', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            qrhash: qrhash
+          }),
+        }
+        );
+
         if (!response.ok) {
           const text = await response.text();
           console.error('Error fetching user data:', text);
@@ -35,9 +45,9 @@ export default function Profile() {
     };
 
     fetchUserData();
-  }, [qrData]);
+  }, [qrhash]);
 
-  const handleInOut = async (action) => {
+  /*const handleInOut = async (action) => {
     try {
       const response = await fetch('http://192.168.14.83:3000/mark-in-out', {
         method: 'POST',
@@ -63,6 +73,7 @@ export default function Profile() {
       console.error(error);
     }
   };
+  */
 
   if (!userData) {
     return <View><Text>Loading...</Text></View>;
@@ -70,7 +81,16 @@ export default function Profile() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>User Profile</Text>
+      <View style={styles.resCon}>
+        <Text style={userData.success === "true" ? styles.titleR : styles.titleG }>USER DATA</Text>
+        <Text style={styles.response}> SUCCESS: {userData.success} </Text>
+        <Text style={styles.response}> STATUS: {userData.status} </Text>
+        <Text style={styles.response}> MESSAGE: {userData.message} </Text>
+      </View>
+      <View style={styles.buttonContainer}>
+        <Button title="New Scan" onPress={() => router.push('/')} />
+      </View>
+      {/*
       <Text>Name: {userData.name}</Text>
       <Text>Register Number: {userData.registerNo}</Text>
       <Text>Status: {userData.status || 'N/A'}</Text>
@@ -81,6 +101,7 @@ export default function Profile() {
         <Button title="Mark Out" onPress={() => handleInOut('out')} />
         <Button title="New Scan" onPress={() => router.push('/')} />
       </View>
+      */}
     </View>
   );
 }
@@ -89,12 +110,22 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
     padding: 20,
   },
-  title: {
+  titleG: {
     fontSize: 24,
     marginBottom: 20,
+    color: '#00ff00',
+  },
+  titleR: {
+    fontSize: 24,
+    marginBottom: 20,
+    color: '#ff0000',
+  },
+  resCon: {
+    backgroundColor: 'rgb(23,23,22)',
+    borderRadius: 5,
+    padding: 10,
   },
   buttonContainer: {
     marginTop: 20,
@@ -102,4 +133,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     width: '100%',
   },
+  response: {
+    fontSize: 20,
+    textAlign: 'justified',
+    color: 'white',
+  }
 });
