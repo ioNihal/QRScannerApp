@@ -18,9 +18,9 @@ export default function Scanner() {
   }, []);
 
   const handleBarCodeScanned = ({ type, data }) => {
-    if (type === 256) {
+    if (type === 256 || type === "qr") {
       setScanned(true);
-      console.log('Scanned QR Code Data:', data);
+      console.log('Scanned QR Code Data:', data , ' TYPE: ' , type);
       router.push({
         pathname:'/Profile' ,
         params: { qrhash: data },
@@ -42,7 +42,7 @@ export default function Scanner() {
       <CameraView
         onBarcodeScanned={scanned ? undefined : handleBarCodeScanned }
         barcodeScannerSettings={{
-          barcodeTypes: ["qr"],
+          barcodeTypes: ["qr", 256],
         }}
         style={styles.cam}
       />

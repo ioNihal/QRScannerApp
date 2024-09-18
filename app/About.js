@@ -13,17 +13,18 @@ const About = () => {
         This application helps maintain QR scanning for tickets, making the process faster and easier. It saves time and is easy to access.
       </Text>
       <Text style={styles.credit}>Made by students from the BCA Department at Srinivas University.</Text>
-      
       <Text style={styles.teamHeading}>Team Members:</Text>
       {teamMembers.map((member, index) => (
         <TouchableOpacity key={index} onPress={() => openLink(member.github)}>
           <View style={styles.teamMemberContainer}>
             <Text style={styles.bullet}>•</Text>
             <Text style={styles.teamMember}>{member.name}</Text>
+            <Text style={styles.teamMember}> - </Text>
+            <Text style={styles.roles}>{member.roles}</Text>
           </View>
         </TouchableOpacity>
       ))}
-      
+      <View style={{borderWidth: 1, borderColor: 'lightgrey', width: '100%', marginVertical: 25}} />
       <Text style={styles.footer}>© su scanner 2024</Text>
     </ScrollView>
   );
@@ -44,6 +45,7 @@ const styles = StyleSheet.create({
     color: '#333',
     marginBottom: 10,
     textAlign: 'center',
+    width: '100%',
   },
   description: {
     fontSize: 16,
@@ -52,7 +54,7 @@ const styles = StyleSheet.create({
     textAlign: 'justified',
   },
   credit: {
-    fontSize: 18,
+    fontSize: 16,
     color: '#777',
     marginBottom: 20,
     textAlign: 'justified',
@@ -81,8 +83,13 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     textAlign: 'left',
   },
+  roles : {
+    fontSize: 16,
+    color: '#543',
+    opacity: 0.7,
+  },
   footer: {
-    fontSize: 12,
+    fontSize: 16,
     color: '#aaa',
     textAlign: 'center',
   }
@@ -90,13 +97,13 @@ const styles = StyleSheet.create({
 
 // Replace with actual GitHub profile URLs
 const teamMembers = [
-  { name: 'Mohammed Rabeeu Ullat', github: 'https://github.com/MohammedRabeeu' },
-  { name: 'Shahabas Abdul Hameed', github: 'https://github.com/ShahabasAbdulHameed' },
-  { name: 'Athul', github: 'https://github.com/Athul' },
-  { name: 'Nihal K', github: 'https://github.com/ioNihal' },
-  { name: 'Akshath', github: 'https://github.com/Akshath' },
-  { name: 'Owais', github: 'https://github.com/Owais' },
-  { name: 'Alan', github: 'https://github.com/Alan' },
+  { name: 'Mohammed Rabeeu Ullat', github: 'https://github.com/MohammedRabeeu', roles: 'Frontend'},
+  { name: 'Shahabas Abdul Hameed', github: 'https://github.com/S488U' , roles: 'Frontend'},
+  { name: 'Athul R V', github: 'https://github.com/47hxl-53r' , roles: 'Backend'},
+  { name: 'Nihal K', github: 'https://github.com/ioNihal' , roles: 'Frontend'},
+  { name: 'Akshath', github: 'https://github.com/AKSHATH99' , roles: 'Frontend'},
+  { name: 'Owais', github: 'https://github.com/Ubbix1' , roles: 'Backend'},
+  { name: 'Alan', github: 'https://github.com/Alan' , roles: 'Backend'},
 ];
 
 export default About;

@@ -1,9 +1,25 @@
 import React from 'react';
-import { View, Button, StyleSheet } from 'react-native';
+import { View, Button, StyleSheet, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 
 export default function Index() {
   const router = useRouter();
+
+  const checkHealth = async () => {
+    try {
+      const response = await fetch('https://icis.dunite.tech/api/healthcheck');
+      const data = await response.json();
+      if (data.status === 'working') {
+        // Show alert with "Status: Working"
+        Alert.alert('Health Check', 'Status: Working', [{ text: 'OK', onPress: () => console.log('OK Pressed') }]);
+      } else {
+        Alert.alert('Health Check', 'Status: Not Working', [{ text: 'OK', onPress: () => console.log('OK Pressed') }]);
+      }
+    } catch (error) {
+      Alert.alert('Health Check', 'Error: Unable to reach server', [{ text: 'OK', onPress: () => console.log('OK Pressed') }]);
+      console.error(error);
+    }
+  }
 
   return (
     <View style={styles.container}>
@@ -15,6 +31,8 @@ export default function Index() {
         title="About Us" 
         onPress={() => router.push('/About')} 
       />
+      <Button title="Check Status" onPress={checkHealth} />
+
     </View>
   );
 }
@@ -22,7 +40,8 @@ export default function Index() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-around',
+    gap: 100,
+    justifyContent: 'center',
     alignItems: 'center',
   },
 });

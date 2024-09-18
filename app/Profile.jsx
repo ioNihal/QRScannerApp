@@ -32,7 +32,11 @@ export default function Profile() {
         if (!response.ok) {
           const text = await response.text();
           console.error('Error fetching user data:', text);
-          Alert.alert('Error fetching user data:', text);
+          Alert.alert('Error fetching user data:', text , [{ text: 'OK', onPress: () => {
+            console.log('OK Pressed');
+            router.dismissAll();
+            router.push('/Scanner');
+             } }]);
           return;
         }
 
@@ -41,6 +45,7 @@ export default function Profile() {
       } catch (error) {
         Alert.alert('Error', 'Failed to fetch user data');
         console.error(error);
+
       }
     };
 
@@ -49,7 +54,7 @@ export default function Profile() {
 
   /*const handleInOut = async (action) => {
     try {
-      const response = await fetch('http://192.168.14.83:3000/mark-in-out', {
+      const response = await fetch('http://ip/mark-in-out', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -83,17 +88,20 @@ export default function Profile() {
     <View style={styles.container}>
       {console.log(JSON.stringify(userData))}
       <View style={styles.resCon}>
-        <Text style={userData.success === "true" ? styles.titleR : styles.titleG }>USER DATA</Text>
-        <Text style={styles.response}> SUCCESS: {userData.success} </Text>
-        <Text style={styles.response}> STATUS: {userData.status} </Text>
-        <Text style={styles.response}> MESSAGE: {userData.message} </Text>
-        <Text style={styles.response}> REGISTER NO: {userData.sregno} </Text>
-        <Text style={styles.response}> NAME: {userData.sname} </Text>
-        <Text style={styles.response}> BATCH: {userData.sbatch} </Text>
-        <Text style={styles.response}> TICKET ID: {userData.sticketno} </Text>
+        <Text style={styles.title}>USER DATA</Text>
+        {userData.regno ? (<Text style={styles.response}> REGISTER NO: {userData.regno} </Text>) : undefined}
+        {userData.name ? (<Text style={styles.response}> NAME: {userData.name} </Text>) : undefined}
+        {userData.batch ? (<Text style={styles.response}> BATCH: {userData.batch} </Text>) : undefined}
+        {userData.ticket ? (<Text style={styles.response}> TICKET: {userData.ticket} </Text>) : undefined}
+        <Text style={styles.success}> {userData.success === "true" ? "SUCCESS" : "FAILED"} </Text>
+        <Text style={userData.message === "User already entered" ? styles.messageColR : styles.messageColG}> MESSAGE: {userData.message} </Text>
       </View>
       <View style={styles.buttonContainer}>
-        <Button title="New Scan" onPress={() => router.push('/')} />
+        <Button title="New Scan" onPress={() => {
+          router.dismissAll();
+          router.push('/Scanner');
+          
+        }} />
       </View>
       {/*
       <Text>Name: {userData.name}</Text>
@@ -117,20 +125,27 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 20,
   },
-  titleG: {
+  title: {
     fontSize: 24,
     marginBottom: 20,
-    color: '#00ff00',
-  },
-  titleR: {
-    fontSize: 24,
-    marginBottom: 20,
-    color: '#ff0000',
+    color: 'white',
   },
   resCon: {
     backgroundColor: 'rgb(23,23,22)',
     borderRadius: 5,
     padding: 10,
+  },
+  messageColG: {
+    color: '#00ff00',
+    fontSize: 25,
+    textAlign: 'justified',
+    marginTop: 5,
+  },
+  messageColR: {
+    color: '#ff0000',
+    fontSize: 25,
+    textAlign: 'justified',
+    marginTop: 5,
   },
   buttonContainer: {
     marginTop: 20,
@@ -142,5 +157,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'justified',
     color: 'white',
+  },
+  success: {
+    fontSize: 20,
+    textAlign: 'justified',
+    color: '#00ff00',
   }
 });
